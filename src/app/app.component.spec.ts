@@ -44,7 +44,11 @@ describe('AppComponent', () => {
   })
 
   it('should throw error on negative numbers',()=>{
-    expect(app.addValues('-1,-2,-3')).toThrowError(`negative numbers not allowed -1,-2,-3`);
+    try{
+      const result = app.addValues('-1,-2,-3');
+    }catch(e){
+      expect(e.message).toEqual(`negative numbers not allowed -1,-2,-3`)
+    }
   })
  
 });
