@@ -2,30 +2,49 @@ import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+  let app: AppComponent;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         AppComponent
       ],
     }).compileComponents();
+    const fixture = TestBed.createComponent(AppComponent);
+    app = fixture.componentInstance;
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+   
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'calculator-demo'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('calculator-demo');
-  });
+  it('should add comma separated values in a string',()=>{
+    const result = app.addValues('1,2,3');
+    expect(result).toEqual(6);
+  })
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('calculator-demo app is running!');
-  });
+  it('should give 0 as result if input is having empty string',()=>{
+    const result = app.addValues('');
+    expect(result).toEqual(0);
+  })
+
+  it('should give single value in int if input having no delimiters and has single value',()=>{
+    const result = app.addValues('123');
+    expect(result).toEqual(123);
+  })
+
+  it('should add comma separated values in a string with semi coloumn as delimiter',()=>{
+    const result = app.addValues(`1;2;3`);
+    expect(result).toEqual(6);
+  })
+
+  it('should add comma separated values in a string with semi coloumn as delimiter on next lines also',()=>{
+    const result = app.addValues(`1\\n;2;3`);
+    expect(result).toEqual(6);
+  })
+
+  it('should throw error on negative numbers',()=>{
+    expect(app.addValues('-1,-2,-3')).toThrowError(`negative numbers not allowed -1,-2,-3`);
+  })
+ 
 });
